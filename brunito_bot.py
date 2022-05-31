@@ -1,10 +1,12 @@
 import logging
+import random
 import requests
 import schedule
 import time
 from datetime import date, datetime
 
-from constants import ASSIGNED,TELEGRAM_BOT_URL, TELEGRAM_GROUP_ID
+from constants import (ASSIGNED, GREETING, GREETING_QUESTION, GOODBYE,
+    TELEGRAM_BOT_URL, TELEGRAM_GROUP_ID)
 
 
 logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
@@ -14,12 +16,18 @@ def create_message(message_number: int) -> str:
     week = date.today().isocalendar()[1] % 5
     assigned = ASSIGNED[week]
     if message_number == 1:
+        greetings = [
+            random.choice(GREETING),
+            random.choice(GREETING_QUESTION),
+            random.choice(GOODBYE)
+        ]
         message = (
-            f'Hola chicos, estamos en la semana {assigned["week"]}, asi que los asignados son:\n\n'
+            f'{greetings[0]}, {greetings[1]}\n\n'
+            f'Estamos en la semana {assigned["week"]}, asi que los asignados son:\n'
             f'*Audio:* {assigned["audio"]}\n'
             f'*Video:* {assigned["video"]}\n'
             f'*Acomodador:* {assigned["attendant"]}\n\n'
-            f'Nos vemos, cuidense\\!'
+            f'{greetings[2]}\\!'
         )
     elif message_number == 2:
         message = (
@@ -52,7 +60,7 @@ def send_message_2():
 
 
 if __name__ == '__main__':
-    schedule.every().monday.at("18:00").do(send_message_1)
+    schedule.every().monday.at("17:00").do(send_message_1)
     schedule.every().thursday.at("18:30").do(send_message_2)
     schedule.every().sunday.at("09:00").do(send_message_2)
 
