@@ -1,5 +1,3 @@
-import os
-
 CATRIEL = "Catriel"
 JOSE = "José"
 PEDRO = "Pedro"
@@ -37,10 +35,6 @@ ASSIGNED = [
         "attendant": PEDRO
     }
 ]
-
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-TELEGRAM_BOT_URL = F"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/"
-TELEGRAM_GROUP_ID = -1001652887763
 
 GREETING = [
     "Hola muchachos",
