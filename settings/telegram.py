@@ -1,0 +1,7 @@
+import os
+
+
+BRUNITO_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+BRUNITO_BOT_URL = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/"
+
+AUDIO_VIDEO_GROUP_ID = -1001652887763
