@@ -3,6 +3,7 @@ import time
 
 from audio_video.audio_video_messages import AudioVideoMessage
 
+
 def schedule_audio_video_message():
     """
     Schedule an audio video message to be sent to the user.
