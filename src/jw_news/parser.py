@@ -13,7 +13,7 @@ class Parser:
     jw_site = 'https://www.jw.org'
 
     def _get_last_articles(self, num_articles: int) -> list:
-        # response = requests.get('https://www.jw.org/en/whats-new/')
+        # response = requests.get(f'{self.jw_site}/en/whats-new/')
         # html = BeautifulSoup(response.text, 'html.parser')
         with open("src/jw_news/news.html", "r") as f:
             html = BeautifulSoup(f, "html.parser")
@@ -31,9 +31,7 @@ class Parser:
         
         if article_info['link'].startswith("/en"):
             article_info['link'] = self.jw_site + article_info['link']
-        article_info['link'] = article_info['link'] \
-            .replace(".", "\\.") \
-            .replace("-", "\\-")
+        article_info['link'] = article_info['link']
 
         return article_info
 

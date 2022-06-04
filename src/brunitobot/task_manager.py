@@ -16,8 +16,14 @@ class BrunitoTaskManager:
         "parse_mode": "MarkdownV2"
     }
 
+    def _format_message(message: str) -> str:
+        return message \
+            .replace(".", "\\.") \
+            .replace("-", "\\-") \
+            .replace("!", "\\!") \
+
     def _perform_sending(self, message) -> requests.Response:
-        self.data['text'] = message
+        self.data['text'] = self._format_message(message)
         response = requests.post(self.url, self.data)
 
         if response.status_code != 200:

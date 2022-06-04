@@ -1,7 +1,6 @@
 import logging
 import random
-import requests
-from datetime import date, datetime
+from datetime import date
 from schedule import every
 
 from audio_video.constants import (ASSIGNED, GREETING, GREETING_QUESTION,
@@ -34,11 +33,11 @@ class AudioVideoMessage(BrunitoTaskManager):
                 f'*Audio:* {assigned["audio"]}\n'
                 f'*Video:* {assigned["video"]}\n'
                 f'*Acomodador:* {assigned["attendant"]}\n\n'
-                f'{greetings[2]}\\!'
+                f'{greetings[2]}!'
             )
         elif message_number == 2:
             message = (
-                f'{assigned["attendant"]}, te recuerdo que hay que iniciar la reunión de zoom 35 min antes\\. Gracias\\!'
+                f'{assigned["attendant"]}, te recuerdo que hay que iniciar la reunión de zoom 35 min antes. Gracias!'
             )
         return message
 
