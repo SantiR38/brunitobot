@@ -16,7 +16,7 @@ class BrunitoTaskManager:
         "parse_mode": "MarkdownV2"
     }
 
-    def _format_message(message: str) -> str:
+    def _format_message(self, message: str) -> str:
         return message \
             .replace(".", "\\.") \
             .replace("-", "\\-") \

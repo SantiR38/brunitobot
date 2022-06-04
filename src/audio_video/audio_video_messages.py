@@ -6,7 +6,7 @@ from schedule import every
 from audio_video.constants import (ASSIGNED, GREETING, GREETING_QUESTION,
     GOODBYE)
 from brunitobot.task_manager import BrunitoTaskManager
-from settings import telegram
+from settings import settings
 
 
 logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
@@ -14,7 +14,7 @@ logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
 
 class AudioVideoMessage(BrunitoTaskManager):
     data = {
-        "chat_id": telegram.AUDIO_VIDEO_GROUP_ID,
+        "chat_id": settings.AUDIO_VIDEO_GROUP_ID,
         "text": "",
         "parse_mode": "MarkdownV2"
     }
