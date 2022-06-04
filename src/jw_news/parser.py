@@ -4,6 +4,8 @@ from datetime import date
 
 from bs4 import BeautifulSoup
 
+from jw_news.models import JWNews
+
 def pprint(data: dict, sort_keys: bool = False) -> None:
     print(json.dumps(data, indent=4, sort_keys=sort_keys))
 
@@ -45,8 +47,14 @@ class Parser:
         articles_links = []
         for article in last_articles:
             new_article = self._get_article_info(article)
-            if new_article['link'] not in articles_links \
-                    and new_article['date'] == '2022-06-03':
+
+            unrepeated_link = not new_article['link'] in articles_links
+            article_is_recent = new_article['date'] == '2022-06-03'
+            not_already_sended = JWNews.select().where(
+                JWNews.link == new_article['link']
+            ).count() == 0
+            if all([unrepeated_link, article_is_recent, not_already_sended]):
                 articles_json.append(new_article)
                 articles_links.append(new_article['link'])
+
         return articles_json
