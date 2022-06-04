@@ -6,9 +6,9 @@ from jw_news.jw_news_messages import JWNewsClient
 
 
 if __name__ == '__main__':
-    # AudioVideoMessage().schedule_audio_video_message()
-    JWNewsClient().send_message()
+    AudioVideoMessage().schedule_tasks()
+    JWNewsClient().schedule_tasks()
 
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(1)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)

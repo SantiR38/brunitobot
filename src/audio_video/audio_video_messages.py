@@ -57,7 +57,7 @@ class AudioVideoMessage:
     def send_message_zoom(self):
         self._send_message(2)
 
-    def schedule_audio_video_message(self):
+    def schedule_tasks(self):
         """
         Schedule an audio video message to be sent to the user.
         """

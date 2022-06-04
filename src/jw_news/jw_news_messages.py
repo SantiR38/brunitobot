@@ -51,7 +51,7 @@ class JWNewsClient:
         
         logging.info(f"Date {dt.now()}:\n{deletions} articles deleted")
 
-    def schedule_actions(self):
+    def schedule_tasks(self) -> None:
         """
         Schedule messages sendings and db instances deletions.
         """
