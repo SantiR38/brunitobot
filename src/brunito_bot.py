@@ -2,6 +2,7 @@ import schedule
 import time
 
 from audio_video.audio_video_messages import AudioVideoMessage
+from jw_news.jw_news_messages import JWNewsClient
 
 
 def schedule_audio_video_message():
@@ -15,8 +16,9 @@ def schedule_audio_video_message():
 
 
 if __name__ == '__main__':
-    schedule_audio_video_message()
+    # schedule_audio_video_message()
+    JWNewsClient().send_message()
 
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)

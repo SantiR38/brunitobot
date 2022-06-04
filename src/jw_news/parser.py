@@ -13,7 +13,7 @@ class Parser:
     def _get_last_articles(self, num_articles: int) -> list:
         # response = requests.get('https://www.jw.org/en/whats-new/')
         # html = BeautifulSoup(response.text, 'html.parser')
-        with open("jw_news/news.html", "r") as f:
+        with open("src/jw_news/news.html", "r") as f:
             html = BeautifulSoup(f, "html.parser")
 
         new_articles_section = html.body.article.find(
@@ -39,14 +39,14 @@ class Parser:
         """
         Returns a list of dictionaries representing the articles.
         """
-        today = date.today().strftime("%Y-%m-%d")
+        today = date.today().strftime("%Y-%m-%d")  # Format: YYYY-MM-DD
         last_articles = self._get_last_articles(20)
         articles_json = []
         articles_links = []
         for article in last_articles:
             new_article = self._get_article_info(article)
             if new_article['link'] not in articles_links \
-                    and new_article['date'] == today:
+                    and new_article['date'] == '2022-06-03':
                 articles_json.append(new_article)
                 articles_links.append(new_article['link'])
         return articles_json
