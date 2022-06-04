@@ -3,3 +3,4 @@ venv/
 api_errors.log
 database/
 .environ
+settings_local.py

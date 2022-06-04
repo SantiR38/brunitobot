@@ -1,10 +1,10 @@
 import json
 import requests
 from datetime import date
-
 from bs4 import BeautifulSoup
 
 from jw_news.models import JWNews
+from settings import settings
 
 def pprint(data: dict, sort_keys: bool = False) -> None:
     print(json.dumps(data, indent=4, sort_keys=sort_keys))
@@ -12,12 +12,15 @@ def pprint(data: dict, sort_keys: bool = False) -> None:
 class Parser:
     jw_site = 'https://www.jw.org'
 
-    def _get_last_articles(self, num_articles: int) -> list:
-        # response = requests.get(f'{self.jw_site}/en/whats-new/')
-        # html = BeautifulSoup(response.text, 'html.parser')
+    def _parse_html(self) -> BeautifulSoup:
+        if not settings.DEBUG:
+            response = requests.get(f'{self.jw_site}/en/whats-new/')
+            return BeautifulSoup(response.text, 'html.parser')
         with open("src/jw_news/news.html", "r") as f:
-            html = BeautifulSoup(f, "html.parser")
+            return BeautifulSoup(f, "html.parser")
 
+    def _get_last_articles(self, num_articles: int) -> list:
+        html = self._parse_html()
         new_articles_section = html.body.article.find(
             "div", class_="whatsNewItems").find_all("div", class_="syn-body")
 
