@@ -6,15 +6,19 @@ from schedule import every
 
 from audio_video.constants import (ASSIGNED, GREETING, GREETING_QUESTION,
     GOODBYE)
+from brunitobot.task_manager import BrunitoTaskManager
 from settings import telegram
 
 
 logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
 
 
-class AudioVideoMessage:
-    url = telegram.BRUNITO_BOT_URL + "sendMessage"
-
+class AudioVideoMessage(BrunitoTaskManager):
+    data = {
+        "chat_id": telegram.AUDIO_VIDEO_GROUP_ID,
+        "text": "",
+        "parse_mode": "MarkdownV2"
+    }
     def _create_message(self, message_number: int) -> str:
         week = date.today().isocalendar()[1] % 5
         assigned = ASSIGNED[week]
@@ -40,16 +44,7 @@ class AudioVideoMessage:
 
     def _send_message(self, message_number: int) -> None:
         message = self._create_message(message_number)
-        data = {
-            "chat_id": telegram.AUDIO_VIDEO_GROUP_ID,
-            "text": message,
-            "parse_mode": "MarkdownV2"
-        }
-        response = requests.post(self.url, data)
-
-        if response.status_code != 200:
-            logging.error(f"Date {datetime.now()}:\n{response.text}\n")
-        print(response.json())
+        self._perform_sending(message)
 
     def send_message_new_week(self):
         self._send_message(1)
