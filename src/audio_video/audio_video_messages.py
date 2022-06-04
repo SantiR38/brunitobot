@@ -2,6 +2,7 @@ import logging
 import random
 import requests
 from datetime import date, datetime
+from schedule import every
 
 from audio_video.constants import (ASSIGNED, GREETING, GREETING_QUESTION,
     GOODBYE)
@@ -37,7 +38,6 @@ class AudioVideoMessage:
             )
         return message
 
-
     def _send_message(self, message_number: int) -> None:
         message = self._create_message(message_number)
         data = {
@@ -51,10 +51,16 @@ class AudioVideoMessage:
             logging.error(f"Date {datetime.now()}:\n{response.text}\n")
         print(response.json())
 
-
     def send_message_new_week(self):
         self._send_message(1)
 
-
     def send_message_zoom(self):
         self._send_message(2)
+
+    def schedule_tasks(self):
+        """
+        Schedule an audio video message to be sent to the user.
+        """
+        every().monday.at("17:00").do(self.send_message_new_week)
+        every().thursday.at("18:30").do(self.send_message_zoom)
+        every().sunday.at("09:00").do(self.send_message_zoom)

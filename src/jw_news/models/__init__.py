@@ -1,0 +1,1 @@
+from .jw_news import JWNews  # noqa: F401
