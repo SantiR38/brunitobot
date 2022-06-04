@@ -1,32 +1,16 @@
 import logging
-import requests
 from datetime import datetime as dt, timedelta as td
 from schedule import every
 
-from jw_news.parser import Parser, pprint
+from brunitobot.task_manager import BrunitoTaskManager
+from jw_news.parser import Parser
 from jw_news.models import JWNews
-from settings import telegram
 
 
 logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
 
 
-class JWNewsClient:
-    url = telegram.BRUNITO_BOT_URL + "sendMessage"
-    data = {
-        "chat_id": telegram.SANTIAGO_CHAT_ID,
-        "parse_mode": "MarkdownV2"
-    }
-
-    def _perform_sending(self, message) -> requests.Response:
-        self.data['text'] = message
-        response = requests.post(self.url, self.data)
-
-        if response.status_code != 200:
-            logging.error(f"Date {dt.now()}:\n{response.text}\n")
-        pprint(response.json())
-        return response
-
+class JWNewsClient(BrunitoTaskManager):
     def send_message(self) -> None:
         content = Parser().get_today_articles()
         
