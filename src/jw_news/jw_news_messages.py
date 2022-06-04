@@ -1,6 +1,7 @@
 import logging
 import requests
 from datetime import datetime as dt, timedelta as td
+from schedule import every
 
 from jw_news.parser import Parser, pprint
 from jw_news.models import JWNews
@@ -8,6 +9,7 @@ from settings import telegram
 
 
 logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
+
 
 class JWNewsClient:
     url = telegram.BRUNITO_BOT_URL + "sendMessage"
@@ -41,9 +43,19 @@ class JWNewsClient:
             )
 
     def delete_old_links(self):
+        three_days_ago = dt.now() - td(days=3)
         old_articles = JWNews.delete().where(
-            JWNews.date_release < dt.now() - td(days=3)
+            JWNews.date_release < three_days_ago
         )
         deletions = old_articles.execute()
         
         logging.info(f"Date {dt.now()}:\n{deletions} articles deleted")
+
+    def schedule_actions(self):
+        """
+        Schedule messages sendings and db instances deletions.
+        """
+        every().day.at("10:00").do(self.send_message)
+        every().day.at("19:30").do(self.send_message)
+
+        every().sunday.at("03:00").do(self.delete_old_links)

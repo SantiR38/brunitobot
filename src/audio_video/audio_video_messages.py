@@ -38,7 +38,6 @@ class AudioVideoMessage:
             )
         return message
 
-
     def _send_message(self, message_number: int) -> None:
         message = self._create_message(message_number)
         data = {
@@ -52,10 +51,8 @@ class AudioVideoMessage:
             logging.error(f"Date {datetime.now()}:\n{response.text}\n")
         print(response.json())
 
-
     def send_message_new_week(self):
         self._send_message(1)
-
 
     def send_message_zoom(self):
         self._send_message(2)
