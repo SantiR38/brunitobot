@@ -1,7 +1,7 @@
 import json
 import logging
 import requests
-from datetime import date, datetime as dt
+from datetime import date, datetime as dt, timedelta as td
 from bs4 import BeautifulSoup
 
 from jw_news.models import JWNews
@@ -53,6 +53,7 @@ class Parser:
         Returns a list of dictionaries representing the articles.
         """
         today = date.today().strftime("%Y-%m-%d")  # Format: YYYY-MM-DD
+        yesterday = (date.today()-td(days=1)).strftime("%Y-%m-%d")  # Format: YYYY-MM-DD
         last_articles = self._get_last_articles(20)
         articles_json = []
         articles_links = []
@@ -60,7 +61,7 @@ class Parser:
             new_article = self._get_article_info(article)
 
             unrepeated_link = not new_article['link'] in articles_links
-            article_is_recent = new_article['date'] == '2022-06-03'
+            article_is_recent = new_article['date'] in [today, yesterday]
             not_already_sended = JWNews.select().where(
                 JWNews.link == new_article['link']
             ).count() == 0
