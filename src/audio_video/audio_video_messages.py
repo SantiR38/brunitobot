@@ -37,7 +37,7 @@ class AudioVideoMessage(BrunitoTaskManager):
             )
         elif message_number == 2:
             message = (
-                f'{assigned["attendant"]}, te recuerdo que hay que iniciar la reunión de zoom 35 min antes. Gracias!'
+                f'{assigned["attendant"]}, hoy abre la reunión de Zoom.'
             )
         return message
 
