@@ -13,7 +13,7 @@ logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
 class JWNewsClient(BrunitoTaskManager):
     def send_message(self) -> None:
         content = Parser().get_today_articles()
-        
+
         if any(content):
             title = "*Estas son las noticias de hoy:*"
             self._perform_sending(title)
