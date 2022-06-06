@@ -39,7 +39,11 @@ class JWNewsClient(BrunitoTaskManager):
         """
         Schedule messages sendings and db instances deletions.
         """
-        every().day.at("10:00").do(self.send_message)
-        every().day.at("19:30").do(self.send_message)
+        hour = self._to_local_hour(10, 0)
+        every().day.at(hour).do(self.send_message)
 
-        every().sunday.at("03:00").do(self.delete_old_links)
+        hour2 = self._to_local_hour(19, 30)
+        every().day.at(hour2).do(self.send_message)
+
+        hour3 = self._to_local_hour(3, 0)
+        every().sunday.at(hour3).do(self.delete_old_links)
