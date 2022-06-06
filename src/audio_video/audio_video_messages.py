@@ -37,7 +37,7 @@ class AudioVideoMessage(BrunitoTaskManager):
             )
         elif message_number == 2:
             message = (
-                f'{assigned["attendant"]}, te recuerdo que hay que iniciar la reunión de zoom 35 min antes. Gracias!'
+                f'{assigned["attendant"]}, hoy abre la reunión de Zoom.'
             )
         return message
 
@@ -55,6 +55,11 @@ class AudioVideoMessage(BrunitoTaskManager):
         """
         Schedule an audio video message to be sent to the user.
         """
-        every().monday.at("17:00").do(self.send_message_new_week)
-        every().thursday.at("18:30").do(self.send_message_zoom)
-        every().sunday.at("09:00").do(self.send_message_zoom)
+        hour = self._to_local_hour(17, 0)
+        every().monday.at(hour).do(self.send_message_new_week)
+
+        hour2 = self._to_local_hour(18, 30)
+        every().thursday.at(hour2).do(self.send_message_zoom)
+
+        hour3 = self._to_local_hour(9, 0)
+        every().sunday.at(hour3).do(self.send_message_zoom)

@@ -1,13 +1,19 @@
 import json
+import logging
 import requests
-from datetime import date
+from datetime import date, datetime as dt, timedelta as td
 from bs4 import BeautifulSoup
 
 from jw_news.models import JWNews
 from settings import settings
 
+
+logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
+
+
 def pprint(data: dict, sort_keys: bool = False) -> None:
     print(json.dumps(data, indent=4, sort_keys=sort_keys))
+
 
 class Parser:
     jw_site = 'https://www.jw.org'
@@ -20,7 +26,11 @@ class Parser:
             return BeautifulSoup(f, "html.parser")
 
     def _get_last_articles(self, num_articles: int) -> list:
-        html = self._parse_html()
+        try:
+            html = self._parse_html()
+        except Exception as e:
+            logging.error(f"Date {dt.now()}:\n{e}")
+            return []
         new_articles_section = html.body.article.find(
             "div", class_="whatsNewItems").find_all("div", class_="syn-body")
 
@@ -43,6 +53,7 @@ class Parser:
         Returns a list of dictionaries representing the articles.
         """
         today = date.today().strftime("%Y-%m-%d")  # Format: YYYY-MM-DD
+        yesterday = (date.today()-td(days=1)).strftime("%Y-%m-%d")  # Format: YYYY-MM-DD
         last_articles = self._get_last_articles(20)
         articles_json = []
         articles_links = []
@@ -50,7 +61,7 @@ class Parser:
             new_article = self._get_article_info(article)
 
             unrepeated_link = not new_article['link'] in articles_links
-            article_is_recent = new_article['date'] == '2022-06-03'
+            article_is_recent = new_article['date'] in [today, yesterday]
             not_already_sended = JWNews.select().where(
                 JWNews.link == new_article['link']
             ).count() == 0

@@ -1,18 +1,18 @@
 import logging
 import requests
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta as td
 
 from jw_news.parser import pprint
-from settings import telegram
+from settings import settings
 
 
 logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
 
 
 class BrunitoTaskManager:
-    url = telegram.BRUNITO_BOT_URL + "sendMessage"
+    url = settings.BRUNITO_BOT_URL + "sendMessage"
     data = {
-        "chat_id": telegram.SANTIAGO_CHAT_ID,
+        "chat_id": settings.SANTIAGO_CHAT_ID,
         "parse_mode": "MarkdownV2"
     }
 
@@ -30,6 +30,22 @@ class BrunitoTaskManager:
             logging.error(f"Date {dt.now()}:\n{response.text}\n")
         pprint(response.json())
         return response
-    
-    def schedule_tasks():
+
+    def _to_local_hour(self, hour: int, minute: int) -> str:
+        """
+        Return local hour with format `HH:MM`
+        """
+        dtime = dt(2022, 6, 5, hour, minute)
+        local_time = dtime + td(hours=settings.DIFF_HOURS)
+        return local_time.strftime("%H:%M")
+
+    def schedule_tasks(self) -> None:
+        """
+        Schedules tasks
+        ---
+        This method will be called by the main script.
+
+        IMPORTANT: Allways use method `_to_local_hour()` to generate the hour
+        of the schedule.
+        """
         raise NotImplementedError()
