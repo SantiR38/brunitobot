@@ -1,6 +1,6 @@
 import peewee
 
 try:
-    database = peewee.SqliteDatabase("src/database/database.db")
+    database = peewee.SqliteDatabase("database.db")
 except Exception as ex:
     print(ex)
