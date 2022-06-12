@@ -49,7 +49,7 @@ class AudioVideoMessage:
 
         if response.status_code != 200:
             logging.error(f"Date {datetime.now()}:\n{response.text}\n")
-        print(response.json())
+        logging.info(response.json())
 
 
     def send_message_new_week(self):

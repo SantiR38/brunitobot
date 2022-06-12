@@ -2,7 +2,7 @@ import logging
 import requests
 from datetime import datetime as dt, timedelta as td
 
-from jw_news.parser import pprint
+from jw_news.parser import dprint
 from settings import settings
 
 
@@ -28,7 +28,7 @@ class BrunitoTaskManager:
 
         if response.status_code != 200:
             logging.error(f"Date {dt.now()}:\n{response.text}\n")
-        pprint(response.json())
+        dprint(response.json())
         return response
 
     def _to_local_hour(self, hour: int, minute: int) -> str:

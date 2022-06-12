@@ -1,6 +1,11 @@
+import logging
 import peewee
+
+
+logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
+
 
 try:
     database = peewee.SqliteDatabase("database.db")
 except Exception as ex:
-    print(ex)
+    logging.error(ex)

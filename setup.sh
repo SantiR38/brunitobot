@@ -6,8 +6,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Database
-mkdir src/database/
 python ./src/jw_news/models/migrations.py
 
 # Running bot tasks
-python ./src/brunito_bot.py
+cd src
+nohup python brunito_bot.py &

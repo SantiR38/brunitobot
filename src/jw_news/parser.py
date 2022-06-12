@@ -11,8 +11,9 @@ from settings import settings
 logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
 
 
-def pprint(data: dict, sort_keys: bool = False) -> None:
-    print(json.dumps(data, indent=4, sort_keys=sort_keys))
+def dprint(data: dict, sort_keys: bool = False) -> None:
+    if settings.DEBUG:
+        print(json.dumps(data, indent=4, sort_keys=sort_keys))
 
 
 class Parser:
