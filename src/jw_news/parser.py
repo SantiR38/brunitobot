@@ -60,12 +60,17 @@ class Parser:
         for article in last_articles:
             new_article = self._get_article_info(article)
 
-            unrepeated_link = not new_article['link'] in articles_links
-            article_is_recent = new_article['date'] in [today, yesterday]
-            not_already_sended = JWNews.select().where(
-                JWNews.link == new_article['link']
-            ).count() == 0
-            if all([unrepeated_link, article_is_recent, not_already_sended]):
+            repeated_link = new_article['link'] in articles_links
+            article_is_old = new_article['date'] not in [today, yesterday]
+
+            if repeated_link or article_is_old:
+                continue
+
+            not_already_sended = JWNews.select() \
+                .where(JWNews.link == new_article['link']) \
+                .count() == 0
+
+            if not_already_sended:
                 articles_json.append(new_article)
                 articles_links.append(new_article['link'])
 
