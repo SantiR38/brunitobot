@@ -60,8 +60,7 @@ class JWVideosAPI(JWAPI):
             logger.error(f"Date {dt.now()}: {response.content}")
             return []
         media = response.json()['category']['media']
-        videos = list(map(self._map_videos, media))
-        import pdb; pdb.set_trace()
+        videos = map(self._map_videos, media)
         videos = list(filter(self._filter_content, videos))
         return videos
 
