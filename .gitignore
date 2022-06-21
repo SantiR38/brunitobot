@@ -4,3 +4,4 @@ api_errors.log
 database.db
 .environ
 settings_local.py
+*.ipynb
