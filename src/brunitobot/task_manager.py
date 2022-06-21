@@ -18,9 +18,11 @@ class BrunitoTaskManager:
 
     def _format_message(self, message: str) -> str:
         return message \
-            .replace(".", "\\.") \
-            .replace("-", "\\-") \
-            .replace("!", "\\!") \
+            .replace(".", "\.") \
+            .replace("-", "\-") \
+            .replace("_", "\_") \
+            .replace("!", "\!") \
+            .replace("#", "\#") \
 
     def _perform_sending(self, message) -> requests.Response:
         self.data['text'] = self._format_message(message)

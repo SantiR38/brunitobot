@@ -48,8 +48,10 @@ class JWVideosAPI(JWAPI):
     videos_url = 'https://www.jw.org/en/library/videos/#en/mediaitems/LatestVideos/'
 
     def _map_videos(self, video):
+        video_link = self.videos_url + video['naturalKey']
+        image_link = video['images']['lss']['lg']
         mapped_video = {
-            'link': self.videos_url + video['naturalKey'],
+            'link': f'[-]({image_link})*Video:*\n[{video["title"]}]({video_link})',
             'date': video['firstPublished'][:10]
         }
         return mapped_video
