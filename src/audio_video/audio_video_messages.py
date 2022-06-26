@@ -10,18 +10,17 @@ from settings import settings
 
 
 logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
+ZOOM = 'zoom'
+NEW_WEEK = 'new_week'
 
 
 class AudioVideoMessage(BrunitoTaskManager):
-    data = {
-        "chat_id": settings.AUDIO_VIDEO_GROUP_ID,
-        "text": "",
-        "parse_mode": "MarkdownV2"
-    }
-    def _create_message(self, message_number: int) -> str:
+    chat_id = settings.AUDIO_VIDEO_GROUP_ID
+
+    def _create_message(self, message_type: str) -> str:
         week = date.today().isocalendar()[1] % 5
         assigned = ASSIGNED[week]
-        if message_number == 1:
+        if message_type == NEW_WEEK:
             greetings = [
                 random.choice(GREETING),
                 random.choice(GREETING_QUESTION),
@@ -35,21 +34,21 @@ class AudioVideoMessage(BrunitoTaskManager):
                 f'*Acomodador:* {assigned["attendant"]}\n\n'
                 f'{greetings[2]}!'
             )
-        elif message_number == 2:
+        elif message_type == ZOOM:
             message = (
                 f'{assigned["attendant"]}, hoy abre la reunión de Zoom.'
             )
         return message
 
-    def _send_message(self, message_number: int) -> None:
-        message = self._create_message(message_number)
+    def _send_message(self, message_type: int) -> None:
+        message = self._create_message(message_type)
         self._perform_sending(message)
 
     def send_message_new_week(self):
-        self._send_message(1)
+        self._send_message(NEW_WEEK)
 
     def send_message_zoom(self):
-        self._send_message(2)
+        self._send_message(ZOOM)
 
     def schedule_tasks(self):
         """

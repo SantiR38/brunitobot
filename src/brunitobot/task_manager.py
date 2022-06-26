@@ -11,10 +11,18 @@ logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
 
 class BrunitoTaskManager:
     url = settings.BRUNITO_BOT_URL + "sendMessage"
-    data = {
-        "chat_id": settings.SANTIAGO_CHAT_ID,
-        "parse_mode": "MarkdownV2"
-    }
+    chat_id = settings.SANTIAGO_CHAT_ID
+    _data = None
+
+    @property
+    def data(self):
+        if self._data is None:
+            self._data = {
+                "chat_id": self.chat_id,
+                "text": "",
+                "parse_mode": "MarkdownV2"
+            }
+        return self._data
 
     def _format_message(self, message: str) -> str:
         return message \

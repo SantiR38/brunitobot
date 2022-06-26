@@ -5,12 +5,15 @@ from schedule import every
 from brunitobot.task_manager import BrunitoTaskManager
 from jw_news.parser import Parser
 from jw_news.models import JWNews
+from settings import settings
 
 
 logging.basicConfig(filename='api_errors.log', level=logging.DEBUG)
 
 
 class JWNewsClient(BrunitoTaskManager):
+    chat_id = settings.JWNEWS_GROUP_ID
+
     def send_message(self) -> None:
         content = Parser().get_today_articles()
 
